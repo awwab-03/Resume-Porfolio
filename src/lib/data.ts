@@ -23,8 +23,8 @@ export const SITE = {
   title: 'Muhammad Awwab Aamir — Full Stack & AI Engineer',
   description:
     'Computer Science student at FAST-NUCES building full-stack web applications, AI-powered platforms, and computer-vision systems. Experienced across React, Next.js, Node.js, and Python.',
-  // Update this to your production domain after deploying.
-  url: 'https://awwab-aamir.vercel.app',
+  // Production domain (update if you add a custom domain later).
+  url: 'https://resume-porfolio.vercel.app',
   location: 'Islamabad, Pakistan',
   email: 'i220971@nu.edu.pk',
   altEmail: 'awwab.contact@gmail.com',
