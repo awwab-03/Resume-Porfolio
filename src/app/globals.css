@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------------------------------------------------------- */
+/*  Design tokens                                                             */
+/* -------------------------------------------------------------------------- */
+
+@layer base {
+  :root {
+    /* Dark-by-default premium palette (HSL channels). */
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+    --muted: 222 30% 12%;
+    --muted-foreground: 215 18% 62%;
+    --border: 215 28% 17%;
+    --card: 222 40% 8%;
+
+    --accent: 158 84% 52%; /* emerald-cyan signature */
+    --accent-foreground: 222 47% 6%;
+    --accent-muted: 158 64% 22%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem; /* offset for the fixed navbar */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: hsl(var(--accent) / 0.25);
+    color: hsl(var(--foreground));
+  }
+
+  /* Accessible focus ring */
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 9999px;
+    border: 2px solid hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Reusable component classes                                                */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .section {
+    @apply scroll-mt-24 py-20 sm:py-28;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent via-emerald-300 to-cyan-300 bg-clip-text text-transparent;
+  }
+
+  .card {
+    @apply rounded-2xl border border-border bg-card/60 backdrop-blur-sm;
+  }
+
+  .glass {
+    @apply border border-white/5 bg-white/[0.03] backdrop-blur-xl;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-200 focus-visible:outline-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-accent-foreground hover:brightness-110 hover:shadow-[0_0_30px_-6px_hsl(var(--accent)/0.6)];
+  }
+
+  .btn-secondary {
+    @apply btn border border-border bg-transparent text-foreground hover:border-accent/50 hover:bg-muted/50;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Utilities                                                                 */
+/* -------------------------------------------------------------------------- */
+
+@layer utilities {
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+  }
+}
+
+/* Respect reduced-motion preferences globally. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
