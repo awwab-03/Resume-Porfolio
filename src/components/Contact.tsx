@@ -1,7 +1,4 @@
-'use client';
-
-import { useState, type FormEvent } from 'react';
-import { Mail, Github, Linkedin, Send, MapPin, Check } from 'lucide-react';
+import { Mail, Github, Linkedin, MapPin, ArrowUpRight } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
 import { SITE, SOCIALS } from '@/lib/data';
@@ -12,51 +9,32 @@ const channels = [
     label: 'Email',
     value: SITE.email,
     href: `mailto:${SITE.email}`,
+    external: false,
   },
   {
     icon: Linkedin,
     label: 'LinkedIn',
     value: 'in/awwab-aamir',
     href: SOCIALS.linkedin,
+    external: true,
   },
   {
     icon: Github,
     label: 'GitHub',
     value: `@${SOCIALS.githubUser}`,
     href: SOCIALS.github,
+    external: true,
   },
   {
     icon: MapPin,
     label: 'Location',
     value: SITE.location,
     href: undefined,
+    external: false,
   },
-];
+] as const;
 
 export function Contact() {
-  const [sent, setSent] = useState(false);
-
-  /**
-   * Composes a pre-filled email via the visitor's mail client. This keeps the
-   * site fully static and deployable with zero backend configuration. To use a
-   * hosted form service instead, see the note in README.md.
-   */
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const data = new FormData(form);
-    const name = String(data.get('name') ?? '');
-    const email = String(data.get('email') ?? '');
-    const message = String(data.get('message') ?? '');
-
-    const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
-    const body = encodeURIComponent(
-      `${message}\n\n— ${name}\n${email}`
-    );
-    window.location.href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
-    setSent(true);
-  }
-
   return (
     <section id="contact" className="section">
       <div className="container">
@@ -66,112 +44,75 @@ export function Contact() {
           description="I'm open to internships, entry-level engineering roles, and collaboration. The fastest way to reach me is email — I usually reply within a day."
         />
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-[1fr_1.2fr]">
-          {/* Channels */}
-          <Reveal className="space-y-3">
-            {channels.map((channel) => {
-              const content = (
-                <div className="card flex items-center gap-4 p-5 transition-colors hover:border-accent/40">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent">
-                    <channel.icon className="h-5 w-5" aria-hidden />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                      {channel.label}
-                    </p>
-                    <p className="truncate text-sm font-medium text-foreground">
-                      {channel.value}
-                    </p>
-                  </div>
-                </div>
-              );
-
-              return channel.href ? (
-                <a
-                  key={channel.label}
-                  href={channel.href}
-                  target={channel.href.startsWith('http') ? '_blank' : undefined}
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  {content}
-                </a>
-              ) : (
-                <div key={channel.label}>{content}</div>
-              );
-            })}
-          </Reveal>
-
-          {/* Form */}
-          <Reveal delay={0.08}>
-            <form onSubmit={handleSubmit} className="card space-y-5 p-7">
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="mb-2 block text-sm font-medium"
-                  >
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    autoComplete="name"
-                    placeholder="Jane Doe"
-                    className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-accent focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="mb-2 block text-sm font-medium"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    placeholder="jane@company.com"
-                    className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-accent focus:outline-none"
-                  />
-                </div>
-              </div>
+        {/* Primary call to action */}
+        <Reveal className="mt-10">
+          <div className="card relative overflow-hidden p-8 sm:p-10">
+            <div
+              className="pointer-events-none absolute inset-0 bg-grid-pattern bg-[size:36px_36px] opacity-[0.25] [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]"
+              aria-hidden
+            />
+            <div className="relative flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
               <div>
-                <label
-                  htmlFor="message"
-                  className="mb-2 block text-sm font-medium"
+                <p className="text-sm uppercase tracking-wide text-muted-foreground">
+                  Reach me directly at
+                </p>
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="mt-1 inline-block text-xl font-semibold text-foreground transition-colors hover:text-accent sm:text-2xl"
                 >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={5}
-                  placeholder="Tell me about the role or project…"
-                  className="w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-accent focus:outline-none"
-                />
+                  {SITE.email}
+                </a>
               </div>
-              <button type="submit" className="btn-primary w-full sm:w-auto">
-                {sent ? (
-                  <>
-                    <Check className="h-4 w-4" aria-hidden />
-                    Opening your mail app…
-                  </>
+              <a href={`mailto:${SITE.email}`} className="btn-primary shrink-0">
+                <Mail className="h-4 w-4" aria-hidden />
+                Email Me
+              </a>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Channels */}
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {channels.map((channel, i) => {
+            const inner = (
+              <div className="card flex h-full items-center gap-4 p-5 transition-colors hover:border-accent/40">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent">
+                  <channel.icon className="h-5 w-5" aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {channel.label}
+                  </p>
+                  <p className="flex items-center gap-1 truncate text-sm font-medium text-foreground">
+                    {channel.value}
+                    {channel.external && (
+                      <ArrowUpRight
+                        className="h-3.5 w-3.5 shrink-0 text-muted-foreground"
+                        aria-hidden
+                      />
+                    )}
+                  </p>
+                </div>
+              </div>
+            );
+
+            return (
+              <Reveal key={channel.label} delay={i * 0.06}>
+                {channel.href ? (
+                  <a
+                    href={channel.href}
+                    target={channel.external ? '_blank' : undefined}
+                    rel={channel.external ? 'noopener noreferrer' : undefined}
+                    className="block h-full"
+                  >
+                    {inner}
+                  </a>
                 ) : (
-                  <>
-                    <Send className="h-4 w-4" aria-hidden />
-                    Send Message
-                  </>
+                  inner
                 )}
-              </button>
-            </form>
-          </Reveal>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

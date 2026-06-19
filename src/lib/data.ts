@@ -26,8 +26,8 @@ export const SITE = {
   // Production domain (update if you add a custom domain later).
   url: 'https://resume-porfolio.vercel.app',
   location: 'Islamabad, Pakistan',
-  email: 'i220971@nu.edu.pk',
-  altEmail: 'awwab.contact@gmail.com',
+  email: 'awwab.contact@gmail.com',
+  altEmail: 'i220971@nu.edu.pk',
   resume: '/resume.pdf',
   ogImage: '/og-image.png',
 } as const;
